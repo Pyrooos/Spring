@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch;
 
+import com.aluracursos.screenmatch.main.ExampleStreams;
 import com.aluracursos.screenmatch.main.Main;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,9 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Main main = new Main();
 		main.showMain();
+		//ExampleStreams exampleStreams = new ExampleStreams();
+		//exampleStreams.showExample();
+		
 
 	}
 }
