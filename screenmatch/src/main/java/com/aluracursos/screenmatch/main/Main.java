@@ -1,4 +1,5 @@
 package com.aluracursos.screenmatch.main;
+
 import com.aluracursos.screenmatch.model.Episode;
 import com.aluracursos.screenmatch.model.EpisodeData;
 import com.aluracursos.screenmatch.model.SerieData;
@@ -19,7 +20,7 @@ public class Main {
     private Scanner keyboard = new Scanner(System.in);
     private ConsumptionAPI consumptionAPI = new ConsumptionAPI();
     private final String URL_BASE = "http://www.omdbapi.com/?t=";
-    private  final  String API_KEY = "&apikey=d4dbcc70";
+    private final String API_KEY = "&apikey=d4dbcc70";
     private toConvertData converter = new toConvertData();
 
 
@@ -58,34 +59,45 @@ public class Main {
                 .collect(Collectors.toList());
 
         //Top 5 episodes
-        System.out.println("Top 5 episodes:");
+        /*System.out.println("Top 5 episodes:");
         episodeData.stream()
                 .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("First filter (N/A)" + e))
                 .sorted(Comparator.comparing(EpisodeData::rating).reversed())
+                .peek(e -> System.out.println("second ordered (M>m)" + e))
+                .map(e -> e.title().toUpperCase())
+                .peek(e -> System.out.println("Third filter mayus (m/M) " + e))
                 .limit(5)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
 
         //converting data to an episode list
         List<Episode> episodes = seasons.stream()
-                .flatMap(t-> t.episode().stream()
-                        .map(d-> new Episode(t.number(),d)))
+                .flatMap(t -> t.episode().stream()
+                        .map(d -> new Episode(t.number(), d)))
                 .collect(Collectors.toList());
-        episodes.forEach(System.out::println);
+        //episodes.forEach(System.out::println);
 
         //search episodes starting from the year
         System.out.println("Please write the year of the series you want ");
         var date = keyboard.nextInt();
         keyboard.nextLine();
 
-        LocalDate dateSearch = LocalDate.of(date, 1,1);
+        LocalDate dateSearch = LocalDate.of(date, 1, 1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        episodes.stream()
-                .filter(e ->e.getDateRelease() != null && e.getDateRelease().isAfter(dateSearch))
-                .forEach(e -> System.out.println(
-                        "Season " + e.getSeason()+
-                                " Episode: "+e.getTitle()+
-                                " Release date: "+ e.getDateRelease().format(dtf)
-                ));
+//        episodes.stream()
+//                .filter(e ->e.getDateRelease() != null && e.getDateRelease().isAfter(dateSearch))
+//                .forEach(e -> System.out.println(
+//                        "Season " + e.getSeason()+
+//
+//                                " Episode: "+e.getTitle()+
+//                                " Release date: "+ e.getDateRelease().format(dtf)
+//                ));
+        // search a part of the title on an episode
+        System.out.println("Please write a part of the title you want search");
+         var partOfTitle =keyboard.nextLine();
+         episodes.stream()
+                 .filter(e-> e.getTitle().contains(partOfTitle))
+                 .findFirst();
     }
 }
