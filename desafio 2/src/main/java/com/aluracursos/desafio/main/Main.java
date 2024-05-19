@@ -5,10 +5,7 @@ import com.aluracursos.desafio.model.DataBook;
 import com.aluracursos.desafio.service.APIConsumption;
 import com.aluracursos.desafio.service.toDataConvert;
 
-import java.util.Comparator;
-import java.util.DoubleSummaryStatistics;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -16,6 +13,8 @@ public class Main {
     private APIConsumption apiConsumption = new APIConsumption();
     private toDataConvert converter =  new toDataConvert();
     private Scanner keyboard = new Scanner(System.in);
+    
+
     public void showMenu(){
         var json = apiConsumption.getData(URL_BASE);
         System.out.println(json);
@@ -49,7 +48,7 @@ public class Main {
                 .collect(Collectors.summarizingDouble(DataBook::downloadNumber));
         System.out.println("Media Downloads: "+ est.getAverage());
         System.out.println("Total Downloads: "+ est.getMax());
-        System.out.println("Minimum Downloads: "+ est.getMin());
+        System.out.println("Minimum Downloads: 3"+ est.getMin());
 
 
 
