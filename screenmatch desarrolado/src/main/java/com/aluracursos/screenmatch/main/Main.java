@@ -17,7 +17,7 @@ public class Main {
     private List<SerieData> seriesData = new ArrayList<>();
     private SerieRepository repositorio;
     private List<Series> seriesList;
-
+    private Optional<Series> seriesSearch;
     public Main(SerieRepository repository) {
 
         this.repositorio = repository;
@@ -37,6 +37,7 @@ public class Main {
                             6 - Search Series by category.
                             7 - Filter Series.
                             8 - Search episode by title
+                            9 - Top 5 episodes by series
                             
                             0 - Exit.
                    
@@ -69,6 +70,9 @@ public class Main {
                            break;
                        case 8 :
                            SearchEpisodesByTitle();
+                           break;
+                       case 9:
+                           top5EpisodesBySeries();
                            break;
                        case 0:
                            System.out.println("Finish program...");
@@ -139,7 +143,7 @@ public class Main {
     private void searchSeriesByTitle(){
         System.out.println("Write the series name you want to search");
         var nameSeries = keyboard.nextLine();
-        Optional<Series> seriesSearch = repositorio.findByTitleContainsIgnoreCase(nameSeries);
+        seriesSearch = repositorio.findByTitleContainsIgnoreCase(nameSeries);
         if (seriesSearch.isPresent()){
             System.out.println("The series searched is:"+ seriesSearch );
         }else{
@@ -182,5 +186,16 @@ public class Main {
                 System.out.printf("Series: %s Season %s Episode %s Rating %s\n",
                         e.getSeries().getTitle(),e.getSeason(),e.getEpisodeNumber(),e.getRating()));
 
+    }
+    private void top5EpisodesBySeries(){
+        searchSeriesByTitle();
+        if(seriesSearch.isPresent()){
+            Series series = seriesSearch.get();
+            List<Episode> topEpisodes = repositorio.top5Episodes(series);
+            topEpisodes.forEach(e ->
+                    System.out.printf("Series: %s - Season %s -  Number %s -Episode name %s - Rating %s\n",
+                            e.getSeries().getTitle(),e.getSeason(),e.getEpisodeNumber(),e.getTitle(),e.getRating()));
+
+        }
     }
 }
