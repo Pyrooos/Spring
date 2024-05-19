@@ -36,6 +36,7 @@ public class Main {
                             5 - The top 5 series.
                             6 - Search Series by category.
                             7 - Filter Series.
+                            8 - Search episode by title
                             
                             0 - Exit.
                    
@@ -65,6 +66,9 @@ public class Main {
                            break;
                        case 7:
                            filterSeriesBySeasonAndRating();
+                           break;
+                       case 8 :
+                           SearchEpisodesByTitle();
                            break;
                        case 0:
                            System.out.println("Finish program...");
@@ -164,9 +168,19 @@ public class Main {
         var rating = keyboard.nextDouble();
         keyboard.nextLine();
 
-        List<Series> seriesFilter = repositorio.findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(totalSeasons, rating);
+        //List<Series> seriesFilter = repositorio.findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(totalSeasons, rating);
+        List<Series> seriesFilter = repositorio.seriesPerSeasonAndRating(totalSeasons,rating);
         System.out.println("----------Filtered series--------- ");
         seriesFilter.forEach(series ->
                 System.out.println(series.getTitle()+ " - rating: "+ series.getRating()));
+    }
+    private void SearchEpisodesByTitle(){
+        System.out.println("What´s the name of the episode you want to search for");
+        var episodesName = keyboard.nextLine();
+        List<Episode> episodesFound = repositorio.episodeByName(episodesName);
+        episodesFound.forEach(e ->
+                System.out.printf("Series: %s Season %s Episode %s Rating %s\n",
+                        e.getSeries().getTitle(),e.getSeason(),e.getEpisodeNumber(),e.getRating()));
+
     }
 }
