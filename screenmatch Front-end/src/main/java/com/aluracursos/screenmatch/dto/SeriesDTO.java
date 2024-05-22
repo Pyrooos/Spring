@@ -4,7 +4,7 @@ import com.aluracursos.screenmatch.model.Category;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-public record SeriesDTO(
+public record SeriesDTO(Long id,
         String title,
         Integer totalSeasons,
         Double rating,
